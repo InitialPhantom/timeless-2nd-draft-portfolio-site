@@ -173,17 +173,13 @@ footer .shell{display:flex;justify-content:flex-end;gap:12px;padding-block:4px 2
 .coll-layer.focusing .railnav,.coll-layer.focusing .top .hint{opacity:0;pointer-events:none}
 .focus{position:absolute;inset:64px 0 0 0;z-index:20;display:flex;align-items:center;justify-content:center;gap:24px;padding:0 var(--pad) 28px;pointer-events:none}
 .focus.on{pointer-events:auto}
-.fcard{position:relative;height:min(80svh,calc(100svh - 120px));aspect-ratio:var(--ar,3/4);max-width:calc(100vw - 580px);border-radius:18px;overflow:hidden;background:#000;
+.fcard{position:relative;height:min(calc(80svh - 46px),calc(100svh - 166px));aspect-ratio:var(--ar,3/4);max-width:calc(100vw - 440px);border-radius:18px;overflow:hidden;background:#000;
   box-shadow:0 50px 100px -40px #000,0 0 0 1px rgba(215,20,26,.3),0 0 90px -20px rgba(215,20,26,.45);visibility:hidden;cursor:grab;touch-action:pan-y;-webkit-user-select:none;user-select:none;transform-origin:0 0}
 .fcard.drag{cursor:grabbing}
 .focus.on .fcard,.focus.moving .fcard{visibility:visible}
 .slider{position:absolute;inset:0;will-change:transform}
 .slider video,.slider img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000}
 .slider img{pointer-events:none}
-.fcard:hover .side{opacity:1}
-.fcard .side{width:18%}
-.fcard .cnt{position:absolute;left:50%;top:12px;translate:-50% 0;z-index:6;font-size:11px;font-weight:600;padding:3px 10px;border-radius:999px;background:rgba(12,12,13,.72);opacity:0;transition:opacity .3s}
-.fcard:hover .cnt{opacity:1}
 .fpanel{width:340px;max-height:min(80svh,calc(100svh - 120px));overflow-y:auto;border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:14px;
   background:rgba(21,21,23,.82);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 0 0 1px rgba(232,227,217,.06),0 30px 60px -30px #000;
   transition:opacity .55s var(--ease) .12s,translate .7s var(--ease) .08s}
@@ -196,16 +192,19 @@ footer .shell{display:flex;justify-content:flex-end;gap:12px;padding-block:4px 2
 .fpanel .txt{display:grid;gap:8px;color:var(--muted);font-size:13.5px;line-height:1.7}
 .fpanel .post{align-self:flex-start}
 .hint2{font-size:11.5px;color:var(--faint)}
-/* arrows outside the piece: they move between pieces. Inside arrows stay only on carousels, for the images */
-.fcard.is-vid .side{display:none}
-.out{flex:none;width:48px;height:48px;border-radius:50%;background:var(--pill);box-shadow:var(--pill-sh);display:grid;place-items:center;transition:background .2s,opacity .4s var(--ease),scale .4s var(--spring)}
-.out:hover{background:#2b2b2f;scale:1.06}
-.out svg{width:17px;height:17px}
-.focus:not(.on) .out{opacity:0;scale:.85}
+/* a small, quiet control bar directly under the piece */
+.fstack{display:flex;flex-direction:column;align-items:center;gap:10px;min-width:0}
+.fbar{display:flex;align-items:center;gap:8px;opacity:0;translate:0 6px;transition:opacity .45s var(--ease) .15s,translate .55s var(--ease) .15s}
+.focus.on .fbar{opacity:1;translate:0 0}
+.fbar .sq{width:30px;height:30px;border-radius:8px;background:var(--pill);box-shadow:var(--pill-sh);display:grid;place-items:center;color:var(--muted);transition:background .2s,color .2s}
+.fbar .sq:hover{background:#2b2b2f;color:var(--text)}
+.fbar .sq svg{width:13px;height:13px}
+.fbar .cnt{min-width:64px;text-align:center;font-size:11.5px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;max-width:46vw;overflow:hidden;text-overflow:ellipsis}
 @media (max-width:900px){
   .layer .top .hint{display:none}
   .focus{flex-direction:column;justify-content:flex-start;gap:12px;padding:6px var(--pad) 18px;overflow-y:auto}
-  .fcard{height:auto;width:min(100%,calc(58svh * var(--arn,.75)));max-width:100%;flex:none}
+  .fstack{width:100%;align-items:center}
+  .fcard{height:auto;width:min(100%,calc(54svh * var(--arn,.75)));max-width:100%;flex:none}
   .fpanel{width:100%;max-height:none;flex:none}
   .focus:not(.on) .fpanel{translate:0 24px}
 }
@@ -215,7 +214,35 @@ footer .shell{display:flex;justify-content:flex-end;gap:12px;padding-block:4px 2
   .work .cap b{font-size:19px}
   .side{display:none}
   .fpanel h1{font-size:28px}
-  .disc{width:150px;height:150px}
+  :root{--r:18px}
+  .pad{padding:14px}
+  .k{font-size:9.5px;letter-spacing:.16em}
+  .coll{padding:14px}
+  .coll h2{font-size:30px}
+  .tile[data-open=carousels] .coll{flex-direction:column;align-items:flex-start;gap:8px}
+  .tile[data-open=carousels] .coll h2{font-size:24px}
+  .open{height:30px;padding:0 11px;font-size:11px;border-radius:10px}
+  .about h1{font-size:26px;margin-top:4px}
+  .about p{font-size:12.5px;line-height:1.55}
+  .about .last{font-size:10.5px}
+  .count strong{font-size:38px}
+  .count p{font-size:11px}
+  .contact h2{font-size:26px;margin-top:4px}
+  .contact .btns{flex-direction:row;flex-wrap:wrap}
+  .btn{height:34px;padding:0 12px;font-size:11.5px;border-radius:10px}
+  .partners .logos{gap:14px 22px}
+  .partners .mk{height:18px}.partners .wm{height:12.5px}.partners .wt{font-size:.98rem}
+  .lg.runway .wm{height:12px}.lg.topaz .mk{height:15px}.lg.hailuo .wm{height:11px}.lg.capcut .mk{height:14px}
+  .dm .pad{gap:8px}
+  .dm .lead{font-size:11.5px;margin-top:4px}
+  .dm textarea{min-height:44px;padding:8px 10px;font-size:12.5px}
+  .dm .row input{height:34px;font-size:12.5px}
+  .dm .note{min-height:0;font-size:11px}
+  .disc{width:120px;height:120px;right:-30px;top:-30px}
+}
+@media (max-width:380px){
+  .dm .lead{display:none}
+  .dm textarea{min-height:52px}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001s!important;transition-duration:.12s!important}.wall .col{animation:none}}
 </style>
@@ -307,12 +334,11 @@ footer .shell{display:flex;justify-content:flex-end;gap:12px;padding-block:4px 2
   </div>
   <!-- the piece, opened in place -->
   <div class="focus" id="focus" aria-hidden="true">
-    <button class="out l" id="oPrev" type="button" aria-label="Previous piece"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <div class="fstack">
     <div class="fcard" id="dstage">
       <div class="slider" id="slider"></div>
-      <button class="side l" id="dPrev" type="button" aria-label="Previous"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></span></button>
-      <button class="side r" id="dNext" type="button" aria-label="Next"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></span></button>
-      <span class="cnt" id="dCnt"></span>
+    </div>
+    <div class="fbar"><button class="sq" id="bPrev" type="button" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button><span class="cnt" id="dCnt"></span><button class="sq" id="bNext" type="button" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></button></div>
     </div>
     <aside class="fpanel" aria-labelledby="dTitle">
       <div class="prow"><span class="k" id="dKind"></span><button class="x" id="dClose" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg>Back</button></div>
@@ -320,9 +346,8 @@ footer .shell{display:flex;justify-content:flex-end;gap:12px;padding-block:4px 2
       <div class="meta" id="dMeta"></div>
       <div class="txt" id="dText"></div>
       <a class="btn red post" id="dPost" href="#" target="_blank" rel="noopener">View on Instagram ↗</a>
-      <span class="hint2">Drag the piece, or use the arrows</span>
+      <span class="hint2">Drag the piece, or use the arrows below it</span>
     </aside>
-    <button class="out r" id="oNext" type="button" aria-label="Next piece"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></button>
   </div>
 </section>
 
@@ -346,9 +371,12 @@ function sizeGrid() {
   grid.style.setProperty('--rowh', ((c * 4 / 3 - 10) / 2) + 'px');
   grid.querySelectorAll('.tile').forEach(t => {
     let w = Math.min(+t.dataset.w, cols), h = +t.dataset.h;
-    if (cols === 2 && !t.dataset.open && w === 2) h = Math.max(h, 3);   // text tiles get a little more room on phones
-    if (cols === 2 && t.classList.contains('count')) { w = 2; h = 1; }
-    if (cols === 2 && t.dataset.open === 'carousels') h = 3;
+    if (cols === 2) {   // phones: a compact bento, Carousels and Followers side by side
+      const PH = { videos: [2, 3], carousels: [1, 2], count: [1, 2], about: [2, 2], partners: [2, 2], contact: [2, 2], dm: [2, 2] };
+      const key = t.dataset.open || [...t.classList].find(c => PH[c]);
+      if (PH[key]) [w, h] = PH[key];
+    }
+    t.style.order = cols === 2 && t.classList.contains('about') ? -1 : '';   // phones: About comes first
     t.style.setProperty('--cw', w); t.style.setProperty('--ch', h);
   });
 }
@@ -546,7 +574,7 @@ function render() {
   const m = slider.firstElementChild, learn = (W, H) => { if (W && H) { DIMS[src] = [W, H]; if (list[di] === p && (p.video || p.slides[si] === src)) fit(W, H); } };
   if (v) v.addEventListener('loadedmetadata', () => learn(v.videoWidth, v.videoHeight), { once: true });
   else if (m.complete && m.naturalWidth) learn(m.naturalWidth, m.naturalHeight); else m.addEventListener('load', () => learn(m.naturalWidth, m.naturalHeight), { once: true });
-  $('#dCnt').textContent = p.slides ? `${si + 1} / ${p.slides.length}` : ''; $('#dCnt').hidden = !p.slides;
+  $('#dCnt').textContent = p.slides ? `${p.title} · ${si + 1} / ${p.slides.length}` : `${di + 1} / ${list.length}`;
   fillInfo(p);
 }
 function blurPulse(ms, falling) {
@@ -585,8 +613,7 @@ function sUp() {
   if (Math.abs(d) > 60) step(d < 0 ? 1 : -1);
 }
 fcard.addEventListener('pointerup', sUp); fcard.addEventListener('pointercancel', sUp);
-$('#dPrev').onclick = () => step(-1); $('#dNext').onclick = () => step(1);
-$('#oPrev').onclick = () => stepPiece(-1); $('#oNext').onclick = () => stepPiece(1);
+$('#bPrev').onclick = () => step(-1); $('#bNext').onclick = () => step(1);
 focus.addEventListener('click', e => { if (e.target === focus) closeDetail(); });   // click the blurred background to go back
 
 const flipFrom = (a, b) => `translate(${a.left - b.left}px,${a.top - b.top}px) scale(${a.width / b.width},${a.height / b.height})`;
