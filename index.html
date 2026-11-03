@@ -409,14 +409,16 @@ function tick() {
   if (!C.length) centers();
   const lo = C[0], hi = C[C.length - 1];
   if (!dragging) {
-    if (seeking) {   // a gentle glide to the chosen piece
-      vel += (target - pos) * .045; vel *= .8; pos += vel;
-      if (Math.abs(target - pos) < .2 && Math.abs(vel) < .05) { pos = target; vel = 0; seeking = false; }
+    if (seeking) {   // ease onto a piece: a smooth exponential glide that never overshoots
+      pos += (target - pos) * .1; vel = 0;
+      if (Math.abs(target - pos) < .3) { pos = target; seeking = false; }
     } else {         // momentum that fades on its own, with a soft give at both ends
       pos += vel; vel *= .955;
       if (pos < lo) { pos += (lo - pos) * .14; vel *= .7; }
       if (pos > hi) { pos += (hi - pos) * .14; vel *= .7; }
-      if (Math.abs(vel) < .04 && pos >= lo - .5 && pos <= hi + .5) vel = 0;
+      if (Math.abs(vel) < 1.6) {   // slow enough: settle gently onto the nearest piece
+        target = C.reduce((b, c) => Math.abs(c - pos) < Math.abs(b - pos) ? c : b, C[0]); seeking = true; vel = 0;
+      }
     }
   }
   rail.style.transform = `translate3d(${-pos}px,0,0)`;
@@ -486,7 +488,7 @@ addEventListener('resize', () => { if (cLayer.classList.contains('show')) { cons
 /* ---------- the piece, opened in place: the strip blurs back, the card grows, details slide in ---------- */
 const focus = $('#focus'), fcard = $('#dstage'), slider = $('#slider');
 let di = 0, si = 0, hiddenCard = null;   // which work, which image inside a carousel
-const AR = p => p.size === 'wide' ? [968, 720] : p.slides ? [4, 5] : [3, 4];
+const AR = p => p.size === 'wide' ? [968, 720] : [3, 4];
 const flat = () => kind === 'videos' ? videos.map((p, i) => [i, 0]) : cars.flatMap((p, i) => p.slides.map((_, k) => [i, k]));
 function fillInfo(p) {
   $('#dKind').textContent = p.video ? `Video · ${di + 1} of ${videos.length}` : `Carousel · ${di + 1} of ${cars.length}`;
@@ -495,13 +497,18 @@ function fillInfo(p) {
   $('#dText').innerHTML = p.text.map(t => `<p>${esc(t)}</p>`).join('');
   $('#dPost').href = p.url; $('#dPost').textContent = p.url.includes('x.com') ? 'View on X ↗' : 'View on Instagram ↗';
 }
+const DIMS = {};   // real width and height of every image or video we have seen
+function fit(w, h) { fcard.style.setProperty('--ar', `${w} / ${h}`); fcard.style.setProperty('--arn', (w / h).toFixed(4)); }
 function render() {
-  const p = list[di], [w, h] = AR(p);
+  const p = list[di], src = p.video || p.slides[si], known = DIMS[src], [w, h] = known || AR(p);
   fcard.classList.toggle('is-vid', !!p.video);
-  fcard.style.setProperty('--ar', `${w} / ${h}`); fcard.style.setProperty('--arn', (w / h).toFixed(4));
+  fit(w, h);
   slider.innerHTML = p.video ? `<video src="${p.video}" poster="${p.poster}" controls autoplay playsinline loop></video>`
     : `<img src="${p.slides[si]}" alt="${esc(p.title)}, image ${si + 1} of ${p.slides.length}" draggable="false">`;
   const v = slider.querySelector('video'); if (v) v.play().catch(() => { v.muted = true; v.play().catch(() => {}); });
+  const m = slider.firstElementChild, learn = (W, H) => { if (W && H) { DIMS[src] = [W, H]; if (list[di] === p && (p.video || p.slides[si] === src)) fit(W, H); } };
+  if (v) v.addEventListener('loadedmetadata', () => learn(v.videoWidth, v.videoHeight), { once: true });
+  else if (m.complete && m.naturalWidth) learn(m.naturalWidth, m.naturalHeight); else m.addEventListener('load', () => learn(m.naturalWidth, m.naturalHeight), { once: true });
   $('#dCnt').textContent = p.slides ? `${si + 1} / ${p.slides.length}` : ''; $('#dCnt').hidden = !p.slides;
   fillInfo(p);
 }
@@ -549,6 +556,8 @@ const flipFrom = (a, b) => `translate(${a.left - b.left}px,${a.top - b.top}px) s
 function openDetail(i, picEl) {
   if (focusOn) return;
   di = i; si = 0; focusOn = true;
+  const im = picEl.querySelector('img');   // the card already knows the first image's real shape
+  if (im && im.naturalWidth && list[i].slides) DIMS[im.getAttribute('src')] = [im.naturalWidth, im.naturalHeight];
   rail.querySelectorAll('video').forEach(v => v.pause());
   const from = picEl.getBoundingClientRect();
   render();
