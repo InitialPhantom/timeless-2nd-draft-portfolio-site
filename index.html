@@ -131,7 +131,7 @@ img,video{display:block}
 /* contact: the tattoo discs from the live site, sized to sit inside the tile */
 .contact h2{white-space:nowrap}
 .msg{display:flex;justify-content:center;align-items:center;gap:clamp(12px,2vw,26px);flex:1;min-height:0}
-.magnet{--ms:148px;position:relative;flex:none;display:grid;place-items:center;width:var(--ms);height:var(--ms);border-radius:50%;color:var(--text);text-align:center;line-height:1.45;transition:transform .5s var(--ease)}
+.magnet{--ms:134px;position:relative;flex:none;display:grid;place-items:center;width:var(--ms);height:var(--ms);border-radius:50%;color:var(--text);text-align:center;line-height:1.45;transition:transform .5s var(--ease)}
 .magnet .tat{position:absolute;inset:0;width:100%;height:100%;color:var(--accent);opacity:.8;transition:opacity .4s,transform 1.2s var(--ease),filter .4s}
 .magnet.xx .tat{color:#CFC9BE;opacity:.55}
 .magnet:hover .tat{opacity:1;transform:rotate(14deg);filter:drop-shadow(0 0 10px rgba(215,20,26,.35))}
@@ -139,8 +139,8 @@ img,video{display:block}
 .magnet > span{display:grid;justify-items:center;gap:.5rem;position:relative;z-index:1;transition:transform .5s var(--ease)}
 .magnet .small{font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text)}
 .magnet .ic{width:20px;height:20px}
-@media (max-width:1180px){.magnet{--ms:124px}.magnet .small{font-size:9.5px}.magnet .ic{width:18px;height:18px}}
-@media (max-width:400px){.magnet{--ms:110px}.msg{padding-top:6px}}
+@media (max-width:1180px){.magnet{--ms:112px}.magnet .small{font-size:9.5px}.magnet .ic{width:18px;height:18px}}
+@media (max-width:400px){.magnet{--ms:100px}.msg{padding-top:6px}}
 /* partners */
 /* logos in centred rows, big enough to read */
 .partners .logos{flex:1;display:flex;flex-wrap:wrap;justify-content:center;align-content:center;align-items:center;gap:26px 38px;padding:4px 0 6px}
@@ -235,8 +235,9 @@ footer .shell{display:flex;justify-content:flex-end;gap:12px;padding-block:4px 2
 .out:hover{background:#2b2b2f;scale:1.06}
 .out svg{width:17px;height:17px}
 .focus:not(.on) .out{opacity:0;scale:.85}
+@media (hover:none){.out{display:none}}   /* touch screens: no round arrows */
 @media (max-width:900px){
-  .layer .top .hint{display:none}
+  .out{display:none}   /* phones and tablets: no round arrows; swipe, the small arrows, or Back */
   .focus{flex-direction:column;justify-content:flex-start;gap:12px;padding:6px var(--pad) 18px;overflow-y:auto}
   .fstack{width:100%;align-items:center}
   .fcard{height:auto;width:min(100%,calc(54svh * var(--arn,.75)));max-width:100%;flex:none}
@@ -254,8 +255,11 @@ footer .shell{display:flex;justify-content:flex-end;gap:12px;padding-block:4px 2
   .k{font-size:9.5px;letter-spacing:.16em}
   .coll{padding:14px}
   .coll h2{font-size:30px}
-  .tile[data-open=carousels] .coll{flex-direction:column;align-items:flex-start;gap:8px}
-  .tile[data-open=carousels] .coll h2{font-size:24px}
+  .tile[data-open] .coll{flex-direction:column;align-items:flex-start;gap:8px}
+  .tile[data-open] .coll h2{font-size:24px}
+  .tile[data-open] .wall{gap:6px}
+  .tile[data-open] .wall .col{gap:6px}
+  .tile[data-open] .wall img{border-radius:9px}
   .open{height:30px;padding:0 11px;font-size:11px;border-radius:10px}
   .about h1{font-size:26px;margin-top:4px}
   .about p{font-size:12.5px;line-height:1.55}
@@ -265,19 +269,22 @@ footer .shell{display:flex;justify-content:flex-end;gap:12px;padding-block:4px 2
   .contact h2{font-size:26px;margin-top:4px}
   .contact .btns{flex-direction:row;flex-wrap:wrap}
   .btn{height:34px;padding:0 12px;font-size:11.5px;border-radius:10px}
-  .partners .logos{gap:14px 22px}
-  .partners .mk{height:18px}.partners .wm{height:12.5px}.partners .wt{font-size:.98rem}
-  .lg.runway .wm{height:12px}.lg.topaz .mk{height:15px}.lg.hailuo .wm{height:11px}.lg.capcut .mk{height:14px}
+  .partners .logos{flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:center;align-content:center;gap:12px 12px;padding:0}
+  .partners a{height:18px;gap:.35rem;opacity:.82}
+  .partners .mk{height:12px}.partners .wm{height:8.5px}.partners .wt{font-size:.66rem}
+  .lg.runway .wm{height:8px}.lg.topaz .mk{height:10px}.lg.hailuo .wm{height:7.5px}.lg.capcut .mk{height:9.5px}
+  .count .pad{justify-content:space-between}
+  .count strong{font-size:32px}
+  .count p{font-size:10.5px;line-height:1.4;margin-top:4px}
   .dm .pad{gap:8px}
-  .dm .lead{font-size:11.5px;margin-top:4px}
+  .dm .lead{font-size:clamp(8.5px,2.62vw,11.5px);margin-top:4px;white-space:nowrap;letter-spacing:-.005em}   /* one line on phones */
   .dm textarea{min-height:44px;padding:8px 10px;font-size:12.5px}
   .dm .row input{height:34px;font-size:12.5px}
   .dm .note{min-height:0;font-size:11px}
   .disc{width:120px;height:120px;right:-30px;top:-30px}
 }
 @media (max-width:380px){
-  .dm .lead{display:none}
-  .dm textarea{min-height:52px}
+  .dm textarea{min-height:36px}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001s!important;transition-duration:.12s!important}.wall .col{animation:none}}
 </style>
@@ -307,8 +314,8 @@ footer .shell{display:flex;justify-content:flex-end;gap:12px;padding-block:4px 2
     </article>
     <article class="tile about" data-w="3" data-h="2">
       <div class="face"><img class="disc" id="disc" src="favicon.svg" alt="" draggable="false">
-        <div class="pad"><div><span class="k">About · Philippines</span><h1>Hey, I&rsquo;m Timeless.</h1></div>
-          <p><b>AI Creative</b> crafting <b>cinematic characters</b> and <b>concept pieces</b> rooted in <em>East Asian</em> and <em>Anime</em> aesthetics.</p>
+        <div class="pad"><div><span class="k">About</span><h1>Hey, I&rsquo;m Timeless.</h1></div>
+          <p>An <b>AI Creative</b> crafting <b>cinematic characters</b> and <b>concept pieces</b> rooted in <em>East Asian</em> and <em>Anime</em> aesthetics.</p>
           <div class="row"><span class="last">last posted <span>The skies were the sea that day.</span></span></div></div>
         <span class="glare"></span></div>
     </article>
@@ -404,15 +411,17 @@ function sizeGrid() {
   const W = grid.clientWidth; if (!W) return;
   const cols = W >= 1000 ? 6 : W >= 640 ? 3 : 2, c = (W - 10 * (cols - 1)) / cols;
   grid.style.setProperty('--cols', cols);
-  grid.style.setProperty('--rowh', ((c * 4 / 3 - 10) / 2) + 'px');
+  /* phones use finer rows (three of them make a square) so Partners and Followers can be exact squares */
+  grid.style.setProperty('--rowh', (cols === 2 ? (c - 20) / 3 : (c * 4 / 3 - 10) / 2) + 'px');
   grid.querySelectorAll('.tile').forEach(t => {
     let w = Math.min(+t.dataset.w, cols), h = +t.dataset.h;
     if (cols === 2) {   // phones: a compact bento, Carousels and Followers side by side
-      const PH = { videos: [2, 3], carousels: [1, 2], count: [1, 2], about: [2, 2], partners: [2, 2], contact: [2, 2], dm: [2, 2] };
+      const PH = { videos: [1, 4], carousels: [1, 4], partners: [1, 3], count: [1, 3], about: [2, 4], contact: [2, 4], dm: [2, 4] };
       const key = t.dataset.open || [...t.classList].find(c => PH[c]);
       if (PH[key]) [w, h] = PH[key];
     }
-    t.style.order = cols === 2 && t.classList.contains('about') ? -1 : '';   // phones: About comes first
+    const ORDER = { about: 1, videos: 2, carousels: 3, partners: 4, count: 5, contact: 6, dm: 7 };   // phones: About first, then the pairs
+    t.style.order = cols === 2 ? ORDER[t.dataset.open || [...t.classList].find(c => ORDER[c])] || '' : '';
     t.style.setProperty('--cw', w); t.style.setProperty('--ch', h);
   });
 }
@@ -569,7 +578,7 @@ $('#rPrev').onclick = () => goTo(idx - 1); $('#rNext').onclick = () => goTo(idx 
 
 function openCollection(which, tile) {
   kind = which; srcTile = tile; list = which === 'videos' ? videos : cars;
-  $('#cTitle').innerHTML = `${which === 'videos' ? 'Videos' : 'Carousels'}<sup>${list.length}</sup>`;
+  $('#cTitle').textContent = which === 'videos' ? 'Videos' : 'Carousels';
   document.body.classList.add('locked');
   cLayer.classList.add('show'); buildRail(); goTo(0, true); tick();
   expand(cLayer, tile.querySelector('.face').getBoundingClientRect(), 22);
