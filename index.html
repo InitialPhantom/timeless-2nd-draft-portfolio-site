@@ -32,8 +32,8 @@ img,video{display:block}
 .bar .shell{height:60px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 /* the mark stays still; it only lights up a little on hover */
 .crumb{display:flex;align-items:center;gap:9px;white-space:nowrap}
-.crumb img{width:22px;height:22px;border-radius:50%;opacity:.8;filter:drop-shadow(0 0 3px rgba(232,227,217,.12));transition:opacity .4s,filter .4s}
-.crumb b{font:400 15px/1 "Italiana",serif;letter-spacing:.24em;color:var(--muted);transition:color .4s,text-shadow .4s}
+.crumb img{width:22px;height:22px;border-radius:50%;opacity:.92;filter:drop-shadow(0 0 3px rgba(232,227,217,.12));transition:opacity .4s,filter .4s}
+.crumb b{font:400 15px/1 "Italiana",serif;letter-spacing:.24em;color:#D6D0C5;-webkit-text-stroke:.45px currentColor;transition:color .4s,text-shadow .4s}
 .crumb:hover img{opacity:1;filter:drop-shadow(0 0 7px rgba(232,227,217,.35))}
 .crumb:hover b{color:var(--text);text-shadow:0 0 10px rgba(232,227,217,.25)}
 .group{display:flex;padding:3px;border-radius:12px;background:var(--tile);gap:2px}
@@ -94,18 +94,20 @@ img,video{display:block}
 .btn.ghost{background:var(--pill);box-shadow:var(--pill-sh)}
 .btn.ghost:hover{background:#2b2b2f}
 /* partners */
-.partners .logos{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px;align-items:center}
-.partners a{display:inline-flex;align-items:center;gap:.55rem;height:26px;color:var(--text);opacity:.6;transition:opacity .25s}
+/* logos in centred rows, big enough to read */
+.partners .logos{flex:1;display:flex;flex-wrap:wrap;justify-content:center;align-content:center;align-items:center;gap:26px 38px;padding:4px 0 6px}
+.partners a{display:inline-flex;align-items:center;gap:.6rem;height:34px;color:var(--text);opacity:.78;transition:opacity .25s}
 .partners a:hover{opacity:1}
 .partners svg{display:block;flex:none}
-.partners .mk{height:19px;width:auto}
-.partners .wm{height:13px;width:auto}
-.partners .wt{font:600 1rem/1 "Manrope",sans-serif;letter-spacing:-.015em}
-.lg.runway .wm{height:12.5px;transform:translateY(2px)}
-.lg.topaz .mk{height:15px}
+.partners .mk{height:26px;width:auto}
+.partners .wm{height:18px;width:auto}
+.partners .wt{font:600 1.38rem/1 "Manrope",sans-serif;letter-spacing:-.015em}
+.lg.runway .wm{height:17px;transform:translateY(2px)}
+.lg.topaz .mk{height:21px}
 .lg.topaz .wm,.lg.capcut .wm{transform:translateY(1.5px)}
-.lg.hailuo .wm{height:11.5px}
-.lg.capcut .mk{height:14px}
+.lg.hailuo .wm{height:16px}
+.lg.capcut .mk{height:20px}
+@media (max-width:1180px){.partners .logos{gap:20px 28px}.partners .mk{height:22px}.partners .wm{height:15px}.partners .wt{font-size:1.15rem}.lg.runway .wm{height:14px}.lg.topaz .mk{height:18px}.lg.hailuo .wm{height:13px}.lg.capcut .mk{height:17px}}
 footer .shell{display:flex;justify-content:flex-end;gap:12px;padding-block:4px 22px;font-size:12px;color:var(--faint)}
 
 /* ---------- layers that expand out of a tile ---------- */
