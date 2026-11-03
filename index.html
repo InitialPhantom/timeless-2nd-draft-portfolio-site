@@ -2,10 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self' https://api.web3forms.com https://cloudflareinsights.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Timeless | Concepts with AI</title>
 <meta name="description" content="Timeless: AI Creative. Cinematic characters and concept pieces.">
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/svg+xml" href="favicon.svg?v=8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Italiana&family=Manrope:wght@400;500;600&display=swap">
@@ -56,8 +58,8 @@ img,video{display:block}
 
 /* collection tiles: columns of the work drifting slowly */
 .wall{position:absolute;inset:-6% -2%;display:flex;gap:8px;transform:rotate(-4deg) scale(1.08)}
-.wall .col{flex:1;display:flex;flex-direction:column;gap:8px;animation:drift var(--d,60s) linear infinite}
-.wall .col:nth-child(2n){animation-direction:reverse}
+.wall .col{flex:1;display:flex;flex-direction:column;gap:8px;animation:drift var(--d,60s) ease-in-out infinite alternate}
+.wall .col:nth-child(2n){animation-direction:alternate-reverse}
 .wall img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:12px;background:var(--pill)}
 @keyframes drift{to{transform:translateY(-50%)}}
 .tile.open-able:hover .wall .col{animation-play-state:paused}
@@ -85,7 +87,7 @@ img,video{display:block}
 .count strong{display:block;font:400 clamp(40px,4.4vw,66px)/.95 "Italiana",serif}
 .count p{margin-top:6px;color:var(--muted);font-size:12px;line-height:1.45}
 /* contact */
-.contact h2{font:400 clamp(30px,3vw,44px)/1.02 "Italiana",serif;letter-spacing:.02em;margin-top:8px}
+.contact h2{font:400 clamp(26px,2.4vw,36px)/1.02 "Italiana",serif;letter-spacing:.02em;margin-top:8px}
 .contact .btns{flex-direction:column;align-items:flex-start}
 .btns{display:flex;flex-wrap:wrap;gap:8px}
 .btn{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 15px;border-radius:12px;font-size:12.5px;font-weight:600;white-space:nowrap;transition:background .2s}
@@ -106,11 +108,39 @@ img,video{display:block}
 .dm .btn{flex:none;border:0;cursor:pointer}
 .dm .btn[disabled]{opacity:.6;cursor:default}
 .dm .note{min-height:16px;font-size:12px;color:var(--muted)}
-.dm .note.ok{color:#B9D9B9}
+.dm .note.ok{color:var(--text)}
 .dm .note.err{color:#F3B7B9}
 .dm .sent textarea,.dm .sent .row{display:none}
+.dm .sent{justify-content:center;align-items:center;text-align:center}
+.dm .sent > div:first-child{position:absolute;left:clamp(16px,1.8vw,26px);top:clamp(16px,1.8vw,26px);text-align:left}
+.dm .sent .lead{display:none}
+.mail{position:absolute;left:50%;top:50%;translate:-50% -50%;width:92px;height:64px;overflow:visible;color:var(--text);pointer-events:none}
+.mail .env{transform-box:fill-box;transform-origin:50% 50%;animation:mailIn .5s var(--ease) both,mailOut .75s cubic-bezier(.55,0,.75,.2) 1.25s forwards}
+.mail .flap{transform-box:fill-box;transform-origin:50% 0;animation:flapShut .45s var(--ease) .45s both}
+.mail .seal{transform-box:fill-box;transform-origin:50% 50%;animation:sealPop .4s var(--spring) .85s both}
+.mail .trail{stroke-dasharray:120;stroke-dashoffset:120;animation:trail .8s var(--ease) 1.35s forwards}
+@keyframes mailIn{from{opacity:0;transform:translateY(10px) scale(.9)}to{opacity:1;transform:none}}
+@keyframes flapShut{from{transform:scaleY(-1)}to{transform:scaleY(1)}}
+@keyframes sealPop{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}
+@keyframes mailOut{to{opacity:0;transform:translate(150px,-56px) rotate(-12deg) scale(.7);filter:blur(1.5px)}}
+@keyframes trail{0%{stroke-dashoffset:120;opacity:.9}100%{stroke-dashoffset:0;opacity:0}}
+.dm .sent .note{max-width:30ch;margin:0 auto;font-size:13px;line-height:1.55;animation:noteUp .6s var(--ease) 1.9s both}
+@keyframes noteUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .hp{position:absolute;left:-9999px;opacity:0;pointer-events:none}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* contact: the tattoo discs from the live site, sized to sit inside the tile */
+.contact h2{white-space:nowrap}
+.msg{display:flex;justify-content:center;align-items:center;gap:clamp(12px,2vw,26px);flex:1;min-height:0}
+.magnet{--ms:148px;position:relative;flex:none;display:grid;place-items:center;width:var(--ms);height:var(--ms);border-radius:50%;color:var(--text);text-align:center;line-height:1.45;transition:transform .5s var(--ease)}
+.magnet .tat{position:absolute;inset:0;width:100%;height:100%;color:var(--accent);opacity:.8;transition:opacity .4s,transform 1.2s var(--ease),filter .4s}
+.magnet.xx .tat{color:#CFC9BE;opacity:.55}
+.magnet:hover .tat{opacity:1;transform:rotate(14deg);filter:drop-shadow(0 0 10px rgba(215,20,26,.35))}
+.magnet.xx:hover .tat{opacity:.85;filter:drop-shadow(0 0 10px rgba(232,227,217,.2))}
+.magnet > span{display:grid;justify-items:center;gap:.5rem;position:relative;z-index:1;transition:transform .5s var(--ease)}
+.magnet .small{font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text)}
+.magnet .ic{width:20px;height:20px}
+@media (max-width:1180px){.magnet{--ms:124px}.magnet .small{font-size:9.5px}.magnet .ic{width:18px;height:18px}}
+@media (max-width:400px){.magnet{--ms:110px}.msg{padding-top:6px}}
 /* partners */
 /* logos in centred rows, big enough to read */
 .partners .logos{flex:1;display:flex;flex-wrap:wrap;justify-content:center;align-content:center;align-items:center;gap:26px 38px;padding:4px 0 6px}
@@ -277,7 +307,7 @@ footer .shell{display:flex;justify-content:flex-end;gap:12px;padding-block:4px 2
     </article>
     <article class="tile about" data-w="3" data-h="2">
       <div class="face"><img class="disc" id="disc" src="favicon.svg" alt="" draggable="false">
-        <div class="pad"><div><span class="k">About</span><h1>Hey, I&rsquo;m Timeless.</h1></div>
+        <div class="pad"><div><span class="k">About · Philippines</span><h1>Hey, I&rsquo;m Timeless.</h1></div>
           <p><b>AI Creative</b> crafting <b>cinematic characters</b> and <b>concept pieces</b> rooted in <em>East Asian</em> and <em>Anime</em> aesthetics.</p>
           <div class="row"><span class="last">last posted <span>The skies were the sea that day.</span></span></div></div>
         <span class="glare"></span></div>
@@ -299,9 +329,9 @@ footer .shell{display:flex;justify-content:flex-end;gap:12px;padding-block:4px 2
     </article>
     <article class="tile contact" data-w="2" data-h="2">
       <div class="face"><div class="pad"><div><span class="k">Partnerships · Collaborations · Licensing</span><h2>Let&rsquo;s make something</h2></div>
-        <div class="btns">
-          <a class="btn red" href="https://www.instagram.com/timeless.aiart/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r=".9" fill="currentColor" stroke="none"/></svg>Message on Instagram</a>
-          <a class="btn ghost" href="https://x.com/Timeless_aiart" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>Message on X</a>
+        <div class="msg">
+          <a class="magnet ig" href="https://www.instagram.com/timeless.aiart/" target="_blank" rel="noopener"><svg class="tat" viewBox="0 0 100 100" aria-hidden="true"><use href="#tatDisc"/></svg><span><svg class="ic" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg><span class="small">Message on<br>Instagram</span></span></a>
+          <a class="magnet xx" href="https://x.com/Timeless_aiart" target="_blank" rel="noopener"><svg class="tat" viewBox="0 0 100 100" aria-hidden="true"><use href="#tatDisc"/></svg><span><svg class="ic" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.234 10.162 22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299-.929-1.329L3.076 1.56h3.182l5.965 8.532.929 1.329 7.754 11.09h-3.182z"/></svg><span class="small">Message on<br>X</span></span></a>
         </div></div><span class="glare"></span></div>
     </article>
     <article class="tile dm" data-w="2" data-h="2">
@@ -327,7 +357,7 @@ footer .shell{display:flex;justify-content:flex-end;gap:12px;padding-block:4px 2
 
 <!-- first expansion: the collection -->
 <section class="layer coll-layer" id="cLayer" role="dialog" aria-modal="true" aria-labelledby="cTitle">
-  <div class="top"><h2 id="cTitle"></h2><span class="hint">Drag, scroll or use the arrows</span>
+  <div class="top"><h2 id="cTitle"></h2>
     <button class="x" id="cClose" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>Close</button></div>
   <div class="railwrap" id="railwrap">
     <div class="rail" id="rail"></div>
@@ -352,7 +382,6 @@ footer .shell{display:flex;justify-content:flex-end;gap:12px;padding-block:4px 2
       <div class="meta" id="dMeta"></div>
       <div class="txt" id="dText"></div>
       <a class="btn red post" id="dPost" href="#" target="_blank" rel="noopener">View on Instagram ↗</a>
-      <span class="hint2">Drag the piece, or use the arrows</span>
     </aside>
     <button class="out r" id="oNext" type="button" aria-label="Next piece"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></button>
   </div>
@@ -678,12 +707,49 @@ $('#home').addEventListener('click', e => { e.preventDefault(); scrollTo({ top: 
       const j = await r.json().catch(() => ({}));
       if (!r.ok || !j.success) throw new Error(j.message || 'failed');
       f.classList.add('sent'); f.reset();
+      note.insertAdjacentHTML('beforebegin', `<svg class="mail" viewBox="0 0 92 64" aria-hidden="true">
+        <path class="trail" d="M10 52 C 40 50, 70 30, 112 6" fill="none" stroke="#D7141A" stroke-width="1.2" stroke-linecap="round"/>
+        <g class="env" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round">
+          <rect x="16" y="14" width="60" height="40" rx="4" fill="#151517"/>
+          <path d="M16 50 L38 33 M76 50 L54 33" opacity=".45"/>
+          <path class="flap" d="M16 14 L46 38 L76 14" fill="#1B1B1E"/>
+          <circle class="seal" cx="46" cy="38" r="4.5" fill="#D7141A" stroke="none"/>
+        </g></svg>`);
       say('Thank you. Your message is on its way to me, and I’ll reply to your email soon.', 'ok');
     } catch {
       say('Sorry, that didn’t send. Please try again, or message me on Instagram.', 'err');
     } finally { send.disabled = false; send.textContent = 'Send'; }
   });
 })();
+
+(function tatDisc() {
+  const R = 7, clip = 'clip-path="url(#tatClip)"';
+  let scales = '';
+  for (let row = 0, y = 34; y < 100 + R * 2; row++, y += R * .5)
+    for (let cx = (row % 2) * R - R; cx < 100 + R * 2; cx += R * 2)
+      scales += `<g transform="translate(${cx} ${y})"><circle r="${R}" fill="#0C0C0D"/>${[1, .72, .44].map(k => `<circle r="${(R * k).toFixed(2)}" fill="none" stroke="currentColor" stroke-width=".7"/>`).join('')}</g>`;
+  let curl = '';
+  for (let a = 0; a < Math.PI * 4; a += .14) { const r = 11 * Math.exp(-.24 * a); curl += `${curl ? 'L' : 'M'}${(30 + Math.cos(a) * r).toFixed(2)} ${(24 + Math.sin(a) * r).toFixed(2)}`; }
+  const sym = `<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <clipPath id="tatClip"><circle cx="50" cy="50" r="46"/></clipPath>
+    <radialGradient id="tatShade"><stop offset="0" stop-color="#0C0C0D" stop-opacity=".92"/><stop offset=".55" stop-color="#0C0C0D" stop-opacity=".55"/><stop offset="1" stop-color="#0C0C0D" stop-opacity="0"/></radialGradient>
+    <symbol id="tatDisc" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="49" fill="#0C0C0D"/>
+      <g ${clip}>${scales}<path d="${curl}" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><path d="M41 24 C 55 14, 66 30, 82 20" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><circle cx="50" cy="52" r="30" fill="url(#tatShade)"/></g>
+      <circle cx="50" cy="50" r="48.5" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width=".5"/>
+    </symbol></defs></svg>`;
+  document.body.insertAdjacentHTML('afterbegin', sym);
+})();
+/* the discs lean a little toward the cursor */
+document.querySelectorAll('.magnet').forEach(mag => {
+  if (!fine) return;
+  mag.addEventListener('pointermove', e => {
+    if (reduce) return; const b = mag.getBoundingClientRect(), x = e.clientX - b.left - b.width / 2, y = e.clientY - b.top - b.height / 2;
+    mag.style.transform = `translate(${x * .14}px, ${y * .14}px)`; mag.firstElementChild.style.transform = `translate(${x * .06}px, ${y * .06}px)`;
+  });
+  mag.addEventListener('pointerleave', () => { mag.style.transform = ''; mag.firstElementChild.style.transform = ''; });
+});
 </script>
 </body>
 </html>
